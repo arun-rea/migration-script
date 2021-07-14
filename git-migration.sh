@@ -1,10 +1,18 @@
 #!/bin/bash
 
-if [ -z "$1" ]; then
-    echo "Error: Pass the Access Token <space> Number of Pages <space> Number of repositories per pages"
+# Personal token of source Github 
+if [[ -z "${SOURCE_TOKEN}" ]]; then
+    echo "Error: Please set the environment variable SOURCE_TOKEN"
     exit 1
 else
-    token=$1
+  token="${SOURCE_TOKEN}"
+fi
+# Personal token of destination Github 
+if [[ -z "${DEST_TOKEN}" ]]; then
+    echo "Error: Please set the environment variable DEST_TOKEN"
+    exit 1
+else
+  dest_token="${DEST_TOKEN}"
 fi
 
 if [ -z "$2" ]; then
@@ -14,16 +22,13 @@ else
 fi
 
 if [ -z "$3" ]; then
-    repos=2
+    repos=1
 else
     repos=$3
 fi
 
 # starting page counter
 page=1
-
-# Personal token of destination Github [this may need to change later]
-dest_token=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
 
 # helper function to clean up if any existing docker containers and images
 function delete_repo(){
