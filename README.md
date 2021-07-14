@@ -1,5 +1,5 @@
-# migration-script
-This is a simple migration script to clone all the repositories from source GitHub account to destination
+# REA GitHub Migration Script
+This is a simple migration script to export all the repositories from source GitHub account to destination GH account
 
 ## How to run
 - Clone the repo into the server or local machine using the command `git clone git@github.com:arun-rea/migration-script.git`
