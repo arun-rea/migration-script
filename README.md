@@ -7,6 +7,9 @@ This is a simple migration script to export all the repositories from source Git
 - Add execution privilege to the script file `chmod +x git-migration.sh`
 - Set environment variables `SOURCE_TOKEN` & `DEST_TOKEN` with the personal user token generated from GHE and PG's GitHub accounts
 - Execute the command `./git-migration.sh <maximum pages> <repository count in each page>`
+    - Default Value for both `<maximum pages>` & `<repository count in each page>` are `1` each. 
+    - Running `./git-migration.sh` w/o passing params will just export one repo from the first page if the GH Organisation.
+    - For exporting all the repositories, you can run `./git-migration.sh 10 100` which will make sure all the repos get migrated.
 
 ## Things to note
 
