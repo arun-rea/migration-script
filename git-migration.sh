@@ -18,13 +18,13 @@ fi
 if [ -z "$1" ]; then
     max=1
 else
-    max=$2
+    max=$1
 fi
 
 if [ -z "$2" ]; then
     repos=1
 else
-    repos=$3
+    repos=$2
 fi
 
 # starting page counter
