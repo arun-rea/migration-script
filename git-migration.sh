@@ -15,13 +15,13 @@ else
   dest_token="${DEST_TOKEN}"
 fi
 
-if [ -z "$2" ]; then
+if [ -z "$1" ]; then
     max=1
 else
     max=$2
 fi
 
-if [ -z "$3" ]; then
+if [ -z "$2" ]; then
     repos=1
 else
     repos=$3
