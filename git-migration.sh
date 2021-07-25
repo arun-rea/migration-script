@@ -7,12 +7,21 @@ if [[ -z "${SOURCE_TOKEN}" ]]; then
 else
   token="${SOURCE_TOKEN}"
 fi
+
 # Personal token of destination Github 
 if [[ -z "${DEST_TOKEN}" ]]; then
     echo "Error: Please set the environment variable DEST_TOKEN"
     exit 1
 else
   dest_token="${DEST_TOKEN}"
+fi
+
+# User Name of the source Gituhb
+if [[ -z "${USER_NAME}" ]]; then
+    echo "Error: Please set the environment variable USER_NAME"
+    exit 1
+else
+  user_name="${USER_NAME}"
 fi
 
 if [ -z "$1" ]; then
@@ -55,10 +64,11 @@ function delete_repo(){
 
 until [ $max -lt $page ];do
 
-    for i in $(curl "https://api.git.realestate.com.au/orgs/pg-rea-transition/repos?access_token=$token&page=$page&per_page=$repos" | grep '"ssh_url"' | cut -d '"' -f4 ); do
+    for i in $(curl "https://api.git.realestate.com.au/orgs/pg-rea-transition/repos?access_token=$token&page=$page&per_page=$repos" | grep '"clone_url"' | cut -d '"' -f4 | sed 's~http[s]*://~~g'); do
         echo git clone "$i"
+
         # make a "bare" clone of the external repository (full copy of the data, but without a working directory):
-        git clone --bare "$i"
+        git clone --bare "https://$user_name:$token@$i"
         basename=$(basename $i)
 
         #get the repo name

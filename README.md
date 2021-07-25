@@ -5,7 +5,7 @@ This is a simple migration script to export all the repositories from source Git
 - Clone the repo into the server or local machine using the command `git clone git@github.com:arun-rea/migration-script.git`
 - open the directory `cd migration-script`
 - Add execution privilege to the script file `chmod +x git-migration.sh`
-- Set environment variables `SOURCE_TOKEN` & `DEST_TOKEN` with the personal user token generated from GHE and PG's GitHub accounts
+- Set environment variables `USER_NAME`, `SOURCE_TOKEN` & `DEST_TOKEN` with the personal user token generated from GHE and PG's GitHub accounts
 - Execute the command `./git-migration.sh <maximum pages> <repository count in each page>`
     - Default Value for both `<maximum pages>` & `<repository count in each page>` are `1` each. 
     - Running `./git-migration.sh` w/o passing params will just export one repo from the first page if the GH Organisation.
@@ -17,3 +17,4 @@ This is a simple migration script to export all the repositories from source Git
 - You can set the env variables with below commands
     - `export SOURCE_TOKEN=<GHE token>`
     - `export DEST_TOKEN=<PG Token>`
+- You can set your GHE user name as `export USER_NAME=<GHE username>` . Note the user name is not the email address and shouldn't have the domain name with it.
