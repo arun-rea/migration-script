@@ -38,7 +38,7 @@ fi
 
 # starting page counter
 page=1
-
+counter=1
 # helper function to clean up if any existing docker containers and images
 function delete_repo(){
     if [ -z "$1" ]; then
@@ -55,10 +55,11 @@ function delete_repo(){
         repo_name=$2
     fi
     # delete repository
-    curl -X DELETE \
+    curl --fail --silent --show-error -X DELETE \
          -H "Authorization: token $token" \
          -H "Accept: application/vnd.github.v3+json" \
          https://api.github.com/repos/propertyguru/"$repo_name" \
+         > /dev/null \
          || true
 }
 
@@ -81,14 +82,14 @@ until [ $max -lt $page ];do
         delete_repo "$dest_token" "$filename"
 
         # create new repository in destination github account based on organisation
-        curl -H "Authorization: token $dest_token" \
+        curl --fail --silent --show-error -H "Authorization: token $dest_token" \
              --data "{\"name\":\"$filename\",\"private\":\"true\"}" \
-             https://api.github.com/orgs/propertyguru/repos
-        curl -X PUT \
+             https://api.github.com/orgs/propertyguru/repos > /dev/null
+        curl --fail --silent --show-error -X PUT \
              -H "Accept: application/vnd.github.v3+json" \
              -H "Authorization: token $dest_token" \
              --data "{\"org\":\"propertyguru\",\"team_slug\":\"iproperty\",\"repo\":\"$filename\",\"permission\":\"maintain\",\"owner\":\"propertyguru\"}" \
-             https://api.github.com/orgs/propertyguru/teams/iproperty/repos/propertyguru/"$filename"
+             https://api.github.com/orgs/propertyguru/teams/iproperty/repos/propertyguru/"$filename" > /dev/null 
         
         # create new repository in destination github account based on user
         # curl -H "Authorization: token $dest_token" \
@@ -96,11 +97,18 @@ until [ $max -lt $page ];do
         #    https://api.github.com/user/repos
             
         #push the repository to destination account
-        git push --mirror git@github.com:propertyguru/"$basename"
+        if git push --mirror git@github.com:propertyguru/"$basename"
+        then
+            echo "******* Migrated Repository - $i ; Repositories completed: $counter *******"
+        else
+            echo "Repository - $i failed to push"
+        fi
 
         # remove temporary local repo
         cd ..
         rm -rf "$basename"
+
+        let counter++
     done
     let page++
 done
