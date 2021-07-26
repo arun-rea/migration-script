@@ -20,5 +20,5 @@ This is a simple migration script to export all the repositories from source Git
 - You can set your GHE user name as `export USER_NAME=<GHE username>` . Note the user name is not the email address and shouldn't have the domain name with it.
 
 ## Running in Linux Server
-- You can use this command to run the script as a background process - `nohup ./git-migration.sh <maximum pages> <repository count in each page> &> migration_logfile.log`
+- You can use this command to run the script as a background process - `nohup ./git-migration.sh <maximum pages> <repository count in each page> &> migration_logfile.log &`
 - Inorder to see the status of the migration of the repos, you can use - `tail -f migration_logfile.log | grep "Migrated Repository"`
