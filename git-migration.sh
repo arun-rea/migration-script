@@ -68,7 +68,7 @@ until [ $max -lt $page ];do
         echo git clone "$i"
 
         # make a "bare" clone of the external repository (full copy of the data, but without a working directory):
-        git clone --bare "https://$user_name:$token@$i"
+        git clone --bare "https://${USER_NAME}:${SOURCE_TOKEN}@$i"
         basename=$(basename $i)
 
         #get the repo name
