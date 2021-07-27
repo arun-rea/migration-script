@@ -39,6 +39,10 @@ fi
 # starting page counter
 page=1
 counter=1
+
+# setting the datetime
+CURRENT_DATE=`date +"%Y-%m-%d %T"`
+
 # helper function to clean up if any existing docker containers and images
 function delete_repo(){
     if [ -z "$1" ]; then
@@ -99,9 +103,9 @@ until [ $max -lt $page ];do
         #push the repository to destination account
         if git push --mirror git@github.com:propertyguru/"$basename"
         then
-            echo "******* Migrated Repository - $i ; Repositories completed: $counter *******"
+            echo "${CURRENT_DATE} ******* Migrated Repository - $i ; Repositories completed: $counter *******"
         else
-            echo "Repository - $i failed to push"
+            echo "${CURRENT_DATE} Repository - $i failed to push"
         fi
 
         # remove temporary local repo
