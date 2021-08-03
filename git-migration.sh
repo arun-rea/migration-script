@@ -40,9 +40,6 @@ fi
 page=1
 counter=1
 
-# setting the datetime
-CURRENT_DATE=`date +"%Y-%m-%d %T"`
-
 # helper function to clean up if any existing docker containers and images
 function delete_repo(){
     if [ -z "$1" ]; then
@@ -67,10 +64,11 @@ function delete_repo(){
          || true
 }
 
-until [ $max -lt $page ];do
-
-    for i in $(curl "https://api.git.realestate.com.au/orgs/pg-rea-transition/repos?access_token=$token&page=$page&per_page=$repos" | grep '"clone_url"' | cut -d '"' -f4 | sed 's~http[s]*://~~g'); do
+while [ $page -le $max ]; do
+    for i in $(curl "https://api.git.realestate.com.au/orgs/pg-rea-transition/repos?access_token=${SOURCE_TOKEN}&page=$page&per_page=$repos" | grep '"clone_url"' | cut -d '"' -f4 | sed 's~http[s]*://~~g'); do
         echo git clone "$i"
+        # setting the datetime
+        CURRENT_DATE=`date +"%Y-%m-%d %T"`
 
         # make a "bare" clone of the external repository (full copy of the data, but without a working directory):
         git clone --bare "https://${USER_NAME}:${SOURCE_TOKEN}@$i"
@@ -114,7 +112,7 @@ until [ $max -lt $page ];do
 
         let counter++
     done
-    let page++
+    page=$(( page+1 ))
 done
 
 
